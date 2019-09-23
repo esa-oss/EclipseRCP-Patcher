@@ -1,0 +1,41 @@
+19.01.2018
+Performance issue while switching tabs when many views open
+
+Cause: The performance problem is caused by 3 inefficiencies that
+multiply each other. 
+1) When an e4 model change is applied that originates from a change of
+the selected view or selection, all Toolbal Managers from the entire 
+application are notified (irrespective of the actual visibility of the 
+toolbar).
+2) Each Toolbar Manager triggers a recalculation of the activation status of
+all Contribution items from the entire application, irrespective of whether
+the item belongs to that toolbar or not.
+3) The calculation of the activation status of a contribution item 
+requires lenghty injection and reflective invocation that are slow
+and inefficiently implemented.
+
+A typical test set-up with 25 views will cause
+40 Toolbar manager updates, for which each will trigger 150 contribution
+item recalculations = 6000 recalculations performed via DI framework.
+Resulting switch time between tabs is 550ms
+
+Affected methods & classes:
+plugin: org.eclipse.e4.core.contexts_1.3.100.v20140407-1019
+-----------------------------------------------------------
+EclipseContext.activateBranch()
+EclipseContext.activate()
+EclipseContext.set(String name, Object value)  (*modified)
+EclipseContext.processScheduled(Set<Scheduled> scheduledList) (*modified)
+
+TrackableComputationExt.update(final ContextChangeEvent event) (*modified)
+TrackableComputationExt.update(final ContextChangeEvent event, final boolean skipCIUpdate) (new)
+
+RunAndTrack.changedWithSkipRedundantUpdates(IEclipseContext context, boolean skipRedundantUpdates) (new)
+
+plugin: org.eclipse.e4.ui.workbench.renderers.swt_0.12.1.v20140903-1023
+-----------------------------------------------------------------------
+ToolBarManagerRenderer.processAddition(final MToolBar toolbarModel, final ToolBarManager manager, MToolBarContribution contribution) (*modified)
+ToolBarManagerRenderer$10.changed()
+ToolBarManagerRenderer$10$1.run()
+
+

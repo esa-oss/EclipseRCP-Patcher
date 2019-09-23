@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EUD Runtime Platform Patching Facility
+Bundle-SymbolicName: esa.egos.eud.common.platformpatcher
+Bundle-Version: 3.2.3.qualifier
+Bundle-Activator: esa.egos.eud.common.platformpatcher.PlatformPatcherPlugin
+Bundle-Vendor: esa.int
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-SourceReferences: scm:git:https://github.com/esa-oss/EclipseRCP-Patcher.git;path="plugins/esa.open.lib.common.platformpatcher";tag=3.2.5
+Export-Package: esa.egos.eud.common.platformpatcher;x-internal:=true,
+ esa.egos.eud.common.platformpatcher.internal;x-internal:=true
