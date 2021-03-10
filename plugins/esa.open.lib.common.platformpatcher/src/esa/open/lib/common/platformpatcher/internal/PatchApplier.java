@@ -95,7 +95,7 @@ public final class PatchApplier
      * Compiled binary class patching org.eclipse.swt.widgets.ToolItem in RAP
      */
     private static final String TOOL_ITEM_RAP = PATH_OF_BIN
-                                                + "ToolItem.org.eclipse.rap.rwt_3.4.0.20171130-0837.binarypatch";
+                                                + "ToolItem.org.eclipse.rap.rwt_3.9.0.20190320-1512.binarypatch";
 
     /**
      * Property key to enable or disable performance improvement features in RAP
