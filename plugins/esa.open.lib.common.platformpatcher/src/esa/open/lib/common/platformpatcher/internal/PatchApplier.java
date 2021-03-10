@@ -17,7 +17,6 @@ import static esa.open.lib.common.platformpatcher.internal.PlatformFlags.CPU_SPE
 import static esa.open.lib.common.platformpatcher.internal.PlatformFlags.NOTRAP;
 import static esa.open.lib.common.platformpatcher.internal.PlatformFlags.OS_SPEC_LINUX;
 import static esa.open.lib.common.platformpatcher.internal.PlatformFlags.RAP;
-import static esa.open.lib.common.platformpatcher.internal.PlatformFlags.UNSPEC;
 import static esa.open.lib.common.platformpatcher.internal.PlatformFlags.WS_SPEC_GTK;
 import static esa.open.lib.common.platformpatcher.internal.PlatformFlags.WS_SPEC_NOTRAP;
 import static esa.open.lib.common.platformpatcher.internal.PlatformFlags.WS_SPEC_RAP;
