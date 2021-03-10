@@ -249,7 +249,7 @@ public final class PatchApplier
         final String className = "org.eclipse.e4.ui.workbench.addons.dndaddon.PartDragAgent";
         final String bundleNam = "org.eclipse.e4.ui.workbench.addons.swt";
         final String bundleVer = "1.3.300.v20181102-1042";
-        patchClassBytecode(patchClassMap, patchName, className, bundleNam, bundleVer, UNSPEC, PART_DRAG_AGENT_PATCH);
+        patchClassBytecode(patchClassMap, patchName, className, bundleNam, bundleVer, NOTRAP, PART_DRAG_AGENT_PATCH);
     }
 
     /**
