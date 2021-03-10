@@ -79,6 +79,14 @@ public class PartDragAgent extends DragAgent {
 		if (ctfPos.y > ctf.getTabHeight()) {
 			return null;
 		}
+		
+	      ///############### START PATCH CONTRIBUTION ###############
+        // Never drag a full CTabFolder
+        if (ctf.getItem(ctfPos) == null)
+        {
+            return null;
+        }
+        ///###############  END PATCH CONTRIBUTION  ###############
 
 		// Prevent dragging 'No Move' stacks
 		if (stack.getTags().contains(IPresentationEngine.NO_MOVE)) {

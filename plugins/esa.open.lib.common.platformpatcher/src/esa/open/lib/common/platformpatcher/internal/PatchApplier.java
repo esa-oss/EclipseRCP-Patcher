@@ -72,7 +72,7 @@ public final class PatchApplier
      * Compiled binary org.eclipse.e4.ui.workbench.addons.dndaddon.PartDragAgent
      */
     private static final String PART_DRAG_AGENT_PATCH = PATH_OF_BIN
-                                                        + "PartDragAgent.org.eclipse.e4.ui.workbench.addons.swt_1.1.1.v20140903-0821.binarypatch";
+                                                        + "PartDragAgent.org.eclipse.e4.ui.workbench.addons.swt_1.3.300.v20181102-1042.binarypatch";
 
     /**
      * Compiled binary class patching
@@ -248,7 +248,7 @@ public final class PatchApplier
         final String patchName = "PartDragAgent patch";
         final String className = "org.eclipse.e4.ui.workbench.addons.dndaddon.PartDragAgent";
         final String bundleNam = "org.eclipse.e4.ui.workbench.addons.swt";
-        final String bundleVer = "1.1.1.v20140903-0821";
+        final String bundleVer = "1.3.300.v20181102-1042";
         patchClassBytecode(patchClassMap, patchName, className, bundleNam, bundleVer, UNSPEC, PART_DRAG_AGENT_PATCH);
     }
 
