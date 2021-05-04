@@ -47,6 +47,9 @@ public final class PatchApplier
     /** The base path where all patch libraries are located within this plugin. */
     private static final String PATH_OF_BIN = "patchedBin/";
 
+    private static final String PARTSERVICEIMPL_PATCH = PATH_OF_BIN
+            + "PartServiceImpl.org.eclipse.e4.ui.workbench_1.2.1.v20140901-1244.binarypatch";
+    
     /** Compiled binary class patching org.eclipse.swt.windgets.TableItem */
     private static final String TABLE_ITEM_LINUX_GTK_64_PATCH = PATH_OF_BIN
                                                                 + "TableItem.swt.gtk.linux.x86_64_3.103.1.v20140903-1947.binarypatch";
@@ -235,6 +238,22 @@ public final class PatchApplier
         patchButton(patchClassMap);
 
         /*
+         * Patch that enables the use non-closable views. It includes/adapts the
+         * following Eclipse patches:
+         * 
+         * - Bug 553338 - One multiple instance view cannot be shown at right
+         * place based on placeholder when some additional view is added to the
+         * current perspective
+         * 
+         * - Bug 516403 - [Compatibility][PerspectiveExtension] closeable
+         * ignored on placeholders
+         * 
+         * - Bug 529182 - NPE on opening second instance of call hierarchy from
+         * editor
+         */
+        patchPartServiceImpl(patchClassMap);
+        
+        /*
          * Patch for eclipse bug 423106. Setting cell span on BIRT reports
          * causes NPE.
          */
@@ -299,6 +318,15 @@ public final class PatchApplier
         }
 
         log("Completed.");
+    }
+    
+    private final void patchPartServiceImpl(final Map<String, byte[]> patchClassMap)
+    {
+        final String patchName = "PartServiceImpl patch";
+        final String className = "org.eclipse.e4.ui.internal.workbench.PartServiceImpl";
+        final String bundleNam = "org.eclipse.e4.ui.workbench";
+        final String bundleVer = "1.2.1.v20140901-1244";
+        patchClassBytecode(patchClassMap, patchName, className, bundleNam, bundleVer, UNSPEC, PARTSERVICEIMPL_PATCH);
     }
 
     private final void patchGridItem(final Map<String, byte[]> patchClassMap)
