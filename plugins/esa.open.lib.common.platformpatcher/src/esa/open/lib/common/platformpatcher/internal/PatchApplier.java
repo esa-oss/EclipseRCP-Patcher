@@ -74,6 +74,12 @@ public final class PatchApplier
                                                         + "PartDragAgent.org.eclipse.e4.ui.workbench.addons.swt_1.3.300.v20181102-1042.binarypatch";
 
     /**
+     * Compiled binary org.eclipse.swt.widgets.Text
+     */
+    private static final String TEXT_LINUX_PATCH = PATH_OF_BIN
+                                                        + "Text.swt.gtk.linux.x86_64_3.109.0.v20181204-1801.binarypatch";
+    
+    /**
      * Compiled binary class patching
      * org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer
      */
@@ -166,6 +172,11 @@ public final class PatchApplier
          * Patch for preventing PartStack dragging - EUD-1227
          */
         patchPartDragAgent(patchClassMap);
+        
+        /*
+         * Patch for enabling Text reskin after change in the enable state - EUD-1339
+         */
+        patchText(patchClassMap);
 
         /*
          * Apply the following patches unless the user disables the RAP
@@ -249,6 +260,15 @@ public final class PatchApplier
         final String bundleNam = "org.eclipse.e4.ui.workbench.addons.swt";
         final String bundleVer = "1.3.300.v20181102-1042";
         patchClassBytecode(patchClassMap, patchName, className, bundleNam, bundleVer, NOTRAP, PART_DRAG_AGENT_PATCH);
+    }
+    
+    private final void patchText(final Map<String, byte[]> patchClassMap)
+    {
+        final String patchName = "Text Linux patch";
+        final String className = "org.eclipse.swt.widgets.Text";
+        final String bundleNam = "org.eclipse.swt";
+        final String bundleVer = "3.109.0.v20181204-1801";
+        patchClassBytecode(patchClassMap, patchName, className, bundleNam, bundleVer, PlatformFlags.LINUX64, TEXT_LINUX_PATCH);
     }
 
     /**
