@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: EUD Runtime Platform Patching Facility
 Bundle-SymbolicName: esa.open.lib.common.platformpatcher
 Automatic-Module-Name: esa.open.lib.common.platformpatcher
-Bundle-Version: 4.1.0.qualifier
+Bundle-Version: 4.1.7.qualifier
 Bundle-Activator: esa.open.lib.common.platformpatcher.PlatformPatcherPlugin
 Bundle-Vendor: esa.int
 Require-Bundle: org.eclipse.core.runtime

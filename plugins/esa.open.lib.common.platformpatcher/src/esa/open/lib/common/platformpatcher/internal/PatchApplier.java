@@ -50,6 +50,11 @@ public final class PatchApplier
      */
     private static final String PATH_OF_BIN = "patchedBin/";
 
+    /**
+     * The reference suffix for SWT GTK Linux binary patch files
+     */
+    private static final String SWT_GTK_LINUX_REF = "swt.gtk.linux.x86_64_3.109.0.v20181204-1801";
+
     /** Compiled binary class patching org.eclipse.jface.action.MenuManager */
     private static final String MENU_MANAGER_PATCH = PATH_OF_BIN + "MenuManager_3.15.0.v20181123-1505.binarypatch";
 
@@ -76,8 +81,7 @@ public final class PatchApplier
     /**
      * Compiled binary org.eclipse.swt.widgets.Text
      */
-    private static final String TEXT_LINUX_PATCH = PATH_OF_BIN
-                                                        + "Text.swt.gtk.linux.x86_64_3.109.0.v20181204-1801.binarypatch";
+    private static final String TEXT_LINUX_PATCH = PATH_OF_BIN + "Text." + SWT_GTK_LINUX_REF + ".binarypatch";
     
     /**
      * Compiled binary class patching
@@ -93,6 +97,28 @@ public final class PatchApplier
     private static final String STACKRENDERER10_RAP_CLASS = PATH_OF_BIN
                                                             + "StackRenderer$10_RAP_0.13.0.20170515-2147.binarypatch";
 
+    /**
+     * Compiled binary classes patching SWT GTK memory leak
+     */
+    private static final String[] SWT_GTK_MEMORY_LEAK_PATCH_BINS = new String[] { PATH_OF_BIN
+                                                                                  + "GC." + SWT_GTK_LINUX_REF
+                                                                                  + ".binarypatch",
+                                                                                  PATH_OF_BIN + "Canvas."
+                                                                                                    + SWT_GTK_LINUX_REF
+                                                                                                    + ".binarypatch",
+                                                                                  PATH_OF_BIN + "Control." + SWT_GTK_LINUX_REF + ".binarypatch",
+                                                                                  PATH_OF_BIN + "Display." + SWT_GTK_LINUX_REF + ".binarypatch",
+                                                                                  PATH_OF_BIN + "ToolTip." + SWT_GTK_LINUX_REF + ".binarypatch" };
+
+    /**
+     * Set of class names patching SWT GTK memoy leak
+     */
+    private static final String[] SWT_GTK_MEMORY_LEAK_CLASS_NAMES = new String[] { "org.eclipse.swt.graphics.GC",
+                                                                                   "org.eclipse.swt.widgets.Canvas",
+                                                                                   "org.eclipse.swt.widgets.Control",
+                                                                                   "org.eclipse.swt.widgets.Display",
+                                                                                   "org.eclipse.swt.widgets.ToolTip" };
+
     /*
      * Eclipse RAP Performance Patches
      */
@@ -101,6 +127,7 @@ public final class PatchApplier
      */
     private static final String TOOL_ITEM_RAP = PATH_OF_BIN
                                                 + "ToolItem.org.eclipse.rap.rwt_3.9.0.20190320-1512.binarypatch";
+
 
     /**
      * Property key to enable or disable performance improvement features in RAP
@@ -179,6 +206,12 @@ public final class PatchApplier
         patchText(patchClassMap);
 
         /*
+         * Patch solving memory leak introduced with Bug#539730 [GTK3] Replace
+         * deprecated gdk_cairo_create() - EUD-1392
+         */
+        patchSWTGTKMemoryLeak(patchClassMap);
+
+        /*
          * Apply the following patches unless the user disables the RAP
          * performance feature (apply by default)
          */
@@ -202,6 +235,25 @@ public final class PatchApplier
         }
 
         log("Completed.");
+    }
+    
+    private final void patchSWTGTKMemoryLeak(final Map<String, byte[]> patchClassMap)
+    {
+        for (int i = 0; i < SWT_GTK_MEMORY_LEAK_PATCH_BINS.length; i++)
+        {
+            final String patchName = "Memory leak patch [" + (i + 1) + "/" + SWT_GTK_MEMORY_LEAK_PATCH_BINS.length
+                                     + "]";
+            final String className = SWT_GTK_MEMORY_LEAK_CLASS_NAMES[i];
+            final String bundleName = "org.eclipse.swt";
+            final String bundleVer = "3.109.0.v20181204-1801";
+            patchClassBytecode(patchClassMap,
+                               patchName,
+                               className,
+                               bundleName,
+                               bundleVer,
+                               PlatformFlags.LINUX64,
+                               SWT_GTK_MEMORY_LEAK_PATCH_BINS[i]);
+        }
     }
 
     private final void patchMenuManager(final Map<String, byte[]> patchClassMap)
